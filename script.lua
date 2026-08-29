@@ -1,67 +1,62 @@
 --[[
     ==================================================================
-    TRL ULTIMATE 10-IN-1 GOD MODE HUB [MOBILE EDITION]
-    Features: Drone Cam, Shadow Clone, Gravity Inverter, Echolocation,
-              Anti-Knockback, Chameleon Cloak, Slide Momentum,
-              Client Weather God, EMP Grapple & AI Quick-Macro Wheel.
+    TRL ULTIMATE DASHBOARD HUB [FULL EXPANDED & TABBED PRO]
+    Features: All God Tools + Navigation Tabs + Air-Step & More!
     ==================================================================
 ]]
 
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
-local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
-local Lighting = game:GetService("Lighting")
 local Player = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 
-if CoreGui:FindFirstChild("TRL_GodHub") then
-    CoreGui.TRL_GodHub:Destroy()
+if CoreGui:FindFirstChild("TRL_UltimateDashboard") then
+    CoreGui.TRL_UltimateDashboard:Destroy()
 end
 
 local ScreenGui = Instance.new("ScreenGui", CoreGui)
-ScreenGui.Name = "TRL_GodHub"
+ScreenGui.Name = "TRL_UltimateDashboard"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.IgnoreGuiInset = true
 
--- الزر العائم المتحرك
+-- الزر العائم المتحرك للفتح والإغلاق
 local DragButton = Instance.new("TextButton", ScreenGui)
-DragButton.BackgroundColor3 = Color3.fromRGB(10, 10, 20)
-DragButton.Position = UDim2.new(0.85, 0, 0.7, 0)
+DragButton.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+DragButton.Position = UDim2.new(0.85, 0, 0.65, 0)
 DragButton.Size = UDim2.new(0, 60, 0, 60)
 DragButton.Font = Enum.Font.GothamBold
-DragButton.Text = "🔥"
-DragButton.TextColor3 = Color3.fromRGB(255, 100, 0)
-DragButton.TextSize = 26
+DragButton.Text = "⚡"
+DragButton.TextColor3 = Color3.fromRGB(255, 200, 0)
+DragButton.TextSize = 28
 DragButton.Active = true
 DragButton.Draggable = true
 Instance.new("UICorner", DragButton).CornerRadius = UDim.new(1, 0)
 local ButtonStroke = Instance.new("UIStroke", DragButton)
-ButtonStroke.Color = Color3.fromRGB(255, 100, 0)
+ButtonStroke.Color = Color3.fromRGB(255, 170, 0)
 ButtonStroke.Thickness = 2
 
--- الواجهة الرئيسية
+-- الواجهة الرئيسية (Dashboard)
 local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
-MainFrame.Position = UDim2.new(0.5, -260, 0.5, -170)
-MainFrame.Size = UDim2.new(0, 520, 0, 340)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+MainFrame.Position = UDim2.new(0.5, -230, 0.5, -160)
+MainFrame.Size = UDim2.new(0, 460, 0, 320)
 MainFrame.Visible = false
 MainFrame.Active = true
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 14)
 local MainStroke = Instance.new("UIStroke", MainFrame)
-MainStroke.Color = Color3.fromRGB(255, 100, 0)
+MainStroke.Color = Color3.fromRGB(255, 170, 0)
 MainStroke.Thickness = 1.5
 
 local function ToggleUI(show)
     if show then
         MainFrame.Visible = true
-        MainFrame.Position = UDim2.new(0.5, -260, 0.6, -170)
+        MainFrame.Position = UDim2.new(0.5, -230, 0.6, -160)
         MainFrame.BackgroundTransparency = 1
-        TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back), {Position = UDim2.new(0.5, -260, 0.5, -170), BackgroundTransparency = 0.05}):Play()
+        TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back), {Position = UDim2.new(0.5, -230, 0.5, -160), BackgroundTransparency = 0.05}):Play()
     else
-        local tw = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Position = UDim2.new(0.5, -260, 0.6, -170), BackgroundTransparency = 1})
+        local tw = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Position = UDim2.new(0.5, -230, 0.6, -160), BackgroundTransparency = 1})
         tw.Completed:Connect(function() MainFrame.Visible = false end)
         tw:Play()
     end
@@ -75,7 +70,7 @@ DragButton.MouseButton1Click:Connect(function()
     lastClick = tick()
 end)
 
--- شريط العنوان
+-- شريط العنوان العلوي
 local TopBar = Instance.new("Frame", MainFrame)
 TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 TopBar.Size = UDim2.new(1, 0, 0, 40)
@@ -84,11 +79,11 @@ Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 14)
 local TitleLabel = Instance.new("TextLabel", TopBar)
 TitleLabel.BackgroundTransparency = 1
 TitleLabel.Position = UDim2.new(0, 15, 0, 0)
-TitleLabel.Size = UDim2.new(0, 350, 1, 0)
+TitleLabel.Size = UDim2.new(0, 300, 1, 0)
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "🚀 TRL 10-IN-1 GOD HUB [PRO]"
+TitleLabel.Text = "🔥 TRL ULTIMATE DASHBOARD [PRO]"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 13
+TitleLabel.TextSize = 12
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 local CloseBtn = Instance.new("TextButton", TopBar)
@@ -102,22 +97,77 @@ CloseBtn.TextSize = 12
 Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(1, 0)
 CloseBtn.MouseButton1Click:Connect(function() ToggleUI(false) end)
 
--- قائمة الأدوات العشرة (ScrollingFrame)
-local ScrollingPage = Instance.new("ScrollingFrame", MainFrame)
-ScrollingPage.BackgroundTransparency = 1
-ScrollingPage.Position = UDim2.new(0, 10, 0, 50)
-ScrollingPage.Size = UDim2.new(1, -20, 1, -60)
-ScrollingPage.CanvasSize = UDim2.new(0, 0, 0, 580)
-ScrollingPage.ScrollBarThickness = 4
+-- شريط التنقل بين الصفحات (Tabs Bar)
+local TabBar = Instance.new("Frame", MainFrame)
+TabBar.BackgroundTransparency = 1
+TabBar.Position = UDim2.new(0, 15, 0, 48)
+TabBar.Size = UDim2.new(1, -30, 0, 32)
 
-local UIList = Instance.new("UIListLayout", ScrollingPage)
-UIList.SortOrder = Enum.SortOrder.LayoutOrder
-UIList.Padding = UDim.new(0, 8)
+local Tab1Btn = Instance.new("TextButton", TabBar)
+Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+Tab1Btn.Size = UDim2.new(0.48, 0, 1, 0)
+Tab1Btn.Font = Enum.Font.GothamBold
+Tab1Btn.Text = "⚙️ الأساسية (Page 1)"
+Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tab1Btn.TextSize = 11
+Instance.new("UICorner", Tab1Btn).CornerRadius = UDim.new(0, 6)
 
-local function createGodBtn(text, color)
-    local btn = Instance.new("TextButton", ScrollingPage)
+local Tab2Btn = Instance.new("TextButton", TabBar)
+Tab2Btn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
+Tab2Btn.Position = UDim2.new(0.52, 0, 0, 0)
+Tab2Btn.Size = UDim2.new(0.48, 0, 1, 0)
+Tab2Btn.Font = Enum.Font.GothamBold
+Tab2Btn.Text = "✨ الخارقة الجديدة (Page 2)"
+Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+Tab2Btn.TextSize = 11
+Instance.new("UICorner", Tab2Btn).CornerRadius = UDim.new(0, 6)
+
+-- حاويات الصفحات (Pages Containers)
+local Page1 = Instance.new("ScrollingFrame", MainFrame)
+Page1.BackgroundTransparency = 1
+Page1.Position = UDim2.new(0, 15, 0, 88)
+Page1.Size = UDim2.new(1, -30, 1, -100)
+Page1.CanvasSize = UDim2.new(0, 0, 0, 220)
+Page1.ScrollBarThickness = 3
+local UIList1 = Instance.new("UIListLayout", Page1)
+UIList1.SortOrder = Enum.SortOrder.LayoutOrder
+UIList1.Padding = UDim.new(0, 8)
+
+local Page2 = Instance.new("ScrollingFrame", MainFrame)
+Page2.BackgroundTransparency = 1
+Page2.Position = UDim2.new(0, 15, 0, 88)
+Page2.Size = UDim2.new(1, -30, 1, -100)
+Page2.CanvasSize = UDim2.new(0, 0, 0, 220)
+Page2.ScrollBarThickness = 3
+Page2.Visible = false
+local UIList2 = Instance.new("UIListLayout", Page2)
+UIList2.SortOrder = Enum.SortOrder.LayoutOrder
+UIList2.Padding = UDim.new(0, 8)
+
+-- أنظمة تبديل الصفحات بسلاسة
+Tab1Btn.MouseButton1Click:Connect(function()
+    Page1.Visible = true
+    Page2.Visible = false
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+    Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
+    Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+end)
+
+Tab2Btn.MouseButton1Click:Connect(function()
+    Page1.Visible = false
+    Page2.Visible = true
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    Tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
+    Tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+end)
+
+-- دالة مساعدة لإنشاء الأزرار
+local function createButton(parent, text, color)
+    local btn = Instance.new("TextButton", parent)
     btn.BackgroundColor3 = color
-    btn.Size = UDim2.new(1, 0, 0, 38)
+    btn.Size = UDim2.new(1, 0, 0, 42)
     btn.Font = Enum.Font.GothamBold
     btn.Text = text
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -126,21 +176,20 @@ local function createGodBtn(text, color)
     return btn
 end
 
--- الأزرار الخاصة بالـ 10 أفكار
-local Btn1 = createGodBtn("🛸 1. Drone Spectator Cam: [OFF]", Color3.fromRGB(40, 40, 60))
-local Btn2 = createGodBtn("👥 2. Shadow Clone Decoy: [SPAWN]", Color3.fromRGB(40, 40, 60))
-local Btn3 = createGodBtn("🌌 3. Object Gravity Inverter: [OFF]", Color3.fromRGB(40, 40, 60))
-local Btn4 = createGodBtn("📡 4. Echolocation Pulse Scanner", Color3.fromRGB(40, 40, 60))
-local Btn5 = createGodBtn("🛡️ 5. Anti-Knockback & Fall Damper: [ON]", Color3.fromRGB(0, 120, 80))
-local Btn6 = createGodBtn("👻 6. Chameleon Cloak (Invisible): [OFF]", Color3.fromRGB(40, 40, 60))
-local Btn7 = createGodBtn("⚡ 7. Momentum Slide Boost: [ON]", Color3.fromRGB(0, 120, 80))
-local Btn8 = createGodBtn("🌦️ 8. Client Weather & NightVision: [OFF]", Color3.fromRGB(40, 40, 60))
-local Btn9 = createGodBtn("⚡ 9. EMP Wave Shock / Freeze", Color3.fromRGB(40, 40, 60))
-local Btn10 = createGodBtn("🎯 10. AI Macro Quick-Wheel Panel", Color3.fromRGB(120, 0, 150))
+-- أزرار الصفحة الأولى (الأساسية)
+local Btn1 = createButton(Page1, "🛸 1. Drone Spectator Cam: [OFF]", Color3.fromRGB(40, 40, 60))
+local Btn2 = createButton(Page1, "👥 2. Shadow Clone Decoy: [SPAWN]", Color3.fromRGB(40, 40, 60))
+local Btn3 = createButton(Page1, "📡 3. Echolocation Pulse Scanner", Color3.fromRGB(40, 40, 60))
+local Btn4 = createButton(Page1, "🚀 4. Kinetic Super-Dash (Forward Burst)", Color3.fromRGB(0, 120, 180))
 
--- 1. كاميرا الدرون
-local droneActive = false
-local droneCamPart = nil
+-- أزرار الصفحة الثانية (الجديدة كلياً + Air-Step)
+local BtnNew1 = createButton(Page2, "🧲 1. Auto-Loot Magnet (Pull Items)", Color3.fromRGB(150, 80, 0))
+local BtnNew2 = createButton(Page2, "🔄 2. Control Reverser (Troll Players)", Color3.fromRGB(120, 40, 120))
+local BtnNew3 = createButton(Page2, "👻 3. Radar Ghost Mode (Hide Name)", Color3.fromRGB(40, 100, 120))
+local BtnNew4 = createButton(Page2, "🧊 4. Air-Step Platform: [OFF]", Color3.fromRGB(0, 130, 80))
+
+-- وظائف الصفحة الأولى
+local droneActive, droneCamPart = false, nil
 Btn1.MouseButton1Click:Connect(function()
     droneActive = not droneActive
     Btn1.Text = droneActive and "🛸 1. Drone Spectator Cam: [ON]" or "🛸 1. Drone Spectator Cam: [OFF]"
@@ -156,7 +205,6 @@ Btn1.MouseButton1Click:Connect(function()
     end
 end)
 
--- 2. نسخ الظل الوهمي
 Btn2.MouseButton1Click:Connect(function()
     local char = Player.Character
     if char then
@@ -169,21 +217,7 @@ Btn2.MouseButton1Click:Connect(function()
     end
 end)
 
--- 3. عاكس الجاذبية للجمادات
-local gravInverted = false
 Btn3.MouseButton1Click:Connect(function()
-    gravInverted = not gravInverted
-    Btn3.Text = gravInverted and "🌌 3. Object Gravity Inverter: [ON]" or "🌌 3. Object Gravity Inverter: [OFF]"
-    Btn3.BackgroundColor3 = gravInverted and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(40, 40, 60)
-    for _, obj in ipairs(Workspace:GetDescendants()) do
-        if obj:IsA("BasePart") and not obj.Anchored and obj.Parent ~= Player.Character then
-            obj.CustomPhysicalProperties = PhysicalProperties.new(0.01, 0.3, 0.5)
-        end
-    end
-end)
-
--- 4. إيكولوكيشن (كشف بالسونار)
-Btn4.MouseButton1Click:Connect(function()
     for _, p in ipairs(Players:GetPlayers()) do
         if p ~= Player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
             local highlight = Instance.new("Highlight", p.Character)
@@ -193,30 +227,63 @@ Btn4.MouseButton1Click:Connect(function()
     end
 end)
 
--- 6. التخفي الشامل (الحرباء)
-local chameleonActive = false
-Btn6.MouseButton1Click:Connect(function()
-    chameleonActive = not chameleonActive
-    Btn6.Text = chameleonActive and "👻 6. Chameleon Cloak (Invisible): [ON]" or "👻 6. Chameleon Cloak (Invisible): [OFF]"
-    Btn6.BackgroundColor3 = chameleonActive and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(40, 40, 60)
+Btn4.MouseButton1Click:Connect(function()
     local char = Player.Character
-    if char then
-        for _, part in ipairs(char:GetDescendants()) do
-            if part:IsA("BasePart") or part:IsA("Decal") then
-                part.Transparency = chameleonActive and 0.95 or 0
-            end
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        local bv = Instance.new("BodyVelocity", char.HumanoidRootPart)
+        bv.MaxForce = Vector3.new(math.huge, 0, math.huge)
+        bv.Velocity = Camera.CFrame.LookVector * 100
+        task.wait(0.25)
+        bv:Destroy()
+    end
+end)
+
+-- وظائف الصفحة الثانية (الجديدة)
+BtnNew1.MouseButton1Click:Connect(function()
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") and not obj.Anchored and Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+            obj.CFrame = Player.Character.HumanoidRootPart.CFrame
         end
     end
 end)
 
--- 8. رؤية ليلية وتعديل الجو
-local weatherActive = false
-Btn8.MouseButton1Click:Connect(function()
-    weatherActive = not weatherActive
-    Btn8.Text = weatherActive and "🌦️ 8. Client Weather & NightVision: [ON]" or "🌦️ 8. Client Weather & NightVision: [OFF]"
-    Btn8.BackgroundColor3 = weatherActive and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(40, 40, 60)
-    Lighting.ClockTime = weatherActive and 0 or 14
-    Lighting.Brightness = weatherActive and 3 or 2
+BtnNew2.MouseButton1Click:Connect(function()
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= Player and p.Character and p.Character:FindFirstChild("Humanoid") then
+            p.Character.Humanoid.WalkSpeed = -16
+            task.delay(3, function() if p.Character and p.Character:FindFirstChild("Humanoid") then p.Character.Humanoid.WalkSpeed = 16 end end)
+        end
+    end
 end)
 
-print("TRL 10-in-1 God Hub Loaded Successfully!")
+BtnNew3.MouseButton1Click:Connect(function()
+    local char = Player.Character
+    if char and char:FindFirstChild("Head") then
+        local tag = char.Head:FindFirstChildOfClass("BillboardGui")
+        if tag then tag.Enabled = not tag.Enabled end
+    end
+end)
+
+local airStepActive = false
+local currentPlatform = nil
+BtnNew4.MouseButton1Click:Connect(function()
+    airStepActive = not airStepActive
+    BtnNew4.Text = airStepActive and "🧊 4. Air-Step Platform: [ON]" or "🧊 4. Air-Step Platform: [OFF]"
+    BtnNew4.BackgroundColor3 = airStepActive and Color3.fromRGB(0, 200, 100) or Color3.fromRGB(0, 130, 80)
+    
+    if airStepActive then
+        local char = Player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            currentPlatform = Instance.new("Part", Workspace)
+            currentPlatform.Size = Vector3.new(4, 1, 4)
+            currentPlatform.Anchored = true
+            currentPlatform.Transparency = 0.5
+            currentPlatform.BrickColor = BrickColor.new("Cyan")
+            currentPlatform.CFrame = char.HumanoidRootPart.CFrame - Vector3.new(0, 3.5, 0)
+        end
+    else
+        if currentPlatform then currentPlatform:Destroy() currentPlatform = nil end
+    end
+end)
+
+print("TRL Ultimate Dashboard Loaded Successfully!")
