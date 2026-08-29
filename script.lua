@@ -1,7 +1,7 @@
 --[[
     ==================================================================
-    TRL ULTIMATE DASHBOARD HUB [FULL EXPANDED & TABBED PRO]
-    Features: All God Tools + Navigation Tabs + Air-Step & More!
+    TRL ULTIMATE DASHBOARD HUB [SECURED KEY EDITION]
+    Step 1: Added Key/Auth Gate Structure (Ready for Website Integration)
     ==================================================================
 ]]
 
@@ -11,6 +11,21 @@ local Workspace = game:GetService("Workspace")
 local TweenService = game:GetService("TweenService")
 local Player = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
+
+-- =================================================================
+-- الخطوة 1: بوابة التحقق المبدئية (API / Key Gate Check)
+-- هنا سيتم لاحقاً جلب حالة المفتاح من موقعك الثاني قبل فتح الداشبورد
+local function verifyUserAccess()
+    -- حالياً سنتركها تمر بسلاسة، وقريباً سنربطها برابط موقعك الخارجي
+    local isAuthorized = true 
+    return isAuthorized
+end
+
+if not verifyUserAccess() then
+    warn("TRL Hub: Access Denied! Please get a key from the website.")
+    return
+end
+-- =================================================================
 
 if CoreGui:FindFirstChild("TRL_UltimateDashboard") then
     CoreGui.TRL_UltimateDashboard:Destroy()
@@ -81,7 +96,7 @@ TitleLabel.BackgroundTransparency = 1
 TitleLabel.Position = UDim2.new(0, 15, 0, 0)
 TitleLabel.Size = UDim2.new(0, 300, 1, 0)
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "🔥 TRL ULTIMATE DASHBOARD [PRO]"
+TitleLabel.Text = "🔥 TRL SECURED DASHBOARD [PRO]"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.TextSize = 12
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -163,7 +178,6 @@ Tab2Btn.MouseButton1Click:Connect(function()
     Tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
 end)
 
--- دالة مساعدة لإنشاء الأزرار
 local function createButton(parent, text, color)
     local btn = Instance.new("TextButton", parent)
     btn.BackgroundColor3 = color
@@ -176,13 +190,13 @@ local function createButton(parent, text, color)
     return btn
 end
 
--- أزرار الصفحة الأولى (الأساسية)
+-- أزرار الصفحة الأولى
 local Btn1 = createButton(Page1, "🛸 1. Drone Spectator Cam: [OFF]", Color3.fromRGB(40, 40, 60))
 local Btn2 = createButton(Page1, "👥 2. Shadow Clone Decoy: [SPAWN]", Color3.fromRGB(40, 40, 60))
 local Btn3 = createButton(Page1, "📡 3. Echolocation Pulse Scanner", Color3.fromRGB(40, 40, 60))
 local Btn4 = createButton(Page1, "🚀 4. Kinetic Super-Dash (Forward Burst)", Color3.fromRGB(0, 120, 180))
 
--- أزرار الصفحة الثانية (الجديدة كلياً + Air-Step)
+-- أزرار الصفحة الثانية
 local BtnNew1 = createButton(Page2, "🧲 1. Auto-Loot Magnet (Pull Items)", Color3.fromRGB(150, 80, 0))
 local BtnNew2 = createButton(Page2, "🔄 2. Control Reverser (Troll Players)", Color3.fromRGB(120, 40, 120))
 local BtnNew3 = createButton(Page2, "👻 3. Radar Ghost Mode (Hide Name)", Color3.fromRGB(40, 100, 120))
@@ -238,7 +252,7 @@ Btn4.MouseButton1Click:Connect(function()
     end
 end)
 
--- وظائف الصفحة الثانية (الجديدة)
+-- وظائف الصفحة الثانية
 BtnNew1.MouseButton1Click:Connect(function()
     for _, obj in ipairs(Workspace:GetDescendants()) do
         if obj:IsA("BasePart") and not obj.Anchored and Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
@@ -286,4 +300,4 @@ BtnNew4.MouseButton1Click:Connect(function()
     end
 end)
 
-print("TRL Ultimate Dashboard Loaded Successfully!")
+print("TRL Secured Dashboard Loaded Successfully!")
