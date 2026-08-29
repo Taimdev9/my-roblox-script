@@ -1,170 +1,342 @@
+--[[
+    ==================================================================
+    TRL ULTIMATE MASTER HUB - ALL-IN-ONE MOBILE EDITION
+    Features: Portal Gun Tool, Grappling Hook Tool, Phase Ghost Dash,
+              Time Dilation, Double Jump, Changelog Log Dashboard.
+    ==================================================================
+]]
+
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
 local Player = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
 
-if CoreGui:FindFirstChild("EnglishHub_500") then
-    CoreGui.EnglishHub_500:Destroy()
+if CoreGui:FindFirstChild("TRL_MasterHub") then
+    CoreGui.TRL_MasterHub:Destroy()
 end
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "EnglishHub_500"
-ScreenGui.Parent = CoreGui
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = "TRL_MasterHub"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.IgnoreGuiInset = true
 
--- واجهة أفقية مخصصة للهواتف
+-- الزر العائم القابل للتحريك
+local DragButton = Instance.new("TextButton", ScreenGui)
+DragButton.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+DragButton.Position = UDim2.new(0.85, 0, 0.75, 0)
+DragButton.Size = UDim2.new(0, 60, 0, 60)
+DragButton.Font = Enum.Font.GothamBold
+DragButton.Text = "⚡"
+DragButton.TextColor3 = Color3.fromRGB(0, 220, 255)
+DragButton.TextSize = 28
+DragButton.Active = true
+DragButton.Draggable = true
+Instance.new("UICorner", DragButton).CornerRadius = UDim.new(1, 0)
+local ButtonStroke = Instance.new("UIStroke", DragButton)
+ButtonStroke.Color = Color3.fromRGB(0, 180, 255)
+ButtonStroke.Thickness = 2
+
+-- الواجهة الرئيسية
 local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 17, 23)
-MainFrame.Position = UDim2.new(0.5, -240, 0.5, -140)
-MainFrame.Size = UDim2.new(0, 480, 0, 280) -- تصميم أفقي مريح
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -160)
+MainFrame.Size = UDim2.new(0, 500, 0, 320)
+MainFrame.Visible = false
 MainFrame.Active = true
-MainFrame.Draggable = true
-Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
-
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 14)
 local MainStroke = Instance.new("UIStroke", MainFrame)
-MainStroke.Color = Color3.fromRGB(0, 160, 255)
+MainStroke.Color = Color3.fromRGB(0, 180, 255)
 MainStroke.Thickness = 1.5
 
--- شريط العنوان العلوي
+local function ToggleUI(show)
+    if show then
+        MainFrame.Visible = true
+        MainFrame.Position = UDim2.new(0.5, -250, 0.6, -160)
+        MainFrame.BackgroundTransparency = 1
+        TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back), {Position = UDim2.new(0.5, -250, 0.5, -160), BackgroundTransparency = 0.05}):Play()
+    else
+        local tw = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Position = UDim2.new(0.5, -250, 0.6, -160), BackgroundTransparency = 1})
+        tw.Completed:Connect(function() MainFrame.Visible = false end)
+        tw:Play()
+    end
+end
+
+local lastClick = 0
+DragButton.MouseButton1Click:Connect(function()
+    if tick() - lastClick < 0.3 then
+        ToggleUI(not MainFrame.Visible)
+    end
+    lastClick = tick()
+end)
+
+-- شريط العنوان وأزرار التنقل بين الصفحات (الأدوات & سجل التحديثات)
 local TopBar = Instance.new("Frame", MainFrame)
-TopBar.BackgroundColor3 = Color3.fromRGB(22, 25, 35)
-TopBar.Size = UDim2.new(1, 0, 0, 32)
-Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 10)
+TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+TopBar.Size = UDim2.new(1, 0, 0, 40)
+Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 14)
 
 local TitleLabel = Instance.new("TextLabel", TopBar)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Position = UDim2.new(0, 10, 0, 0)
-TitleLabel.Size = UDim2.new(0, 350, 1, 0)
+TitleLabel.Position = UDim2.new(0, 15, 0, 0)
+TitleLabel.Size = UDim2.new(0, 300, 1, 0)
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "📚 500+ English Master Hub (Mobile Horizontal)"
+TitleLabel.Text = "🌌 TRL MASTER HUB [PRO]"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 11
+TitleLabel.TextSize = 13
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 local CloseBtn = Instance.new("TextButton", TopBar)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-CloseBtn.Position = UDim2.new(1, -28, 0, 4)
-CloseBtn.Size = UDim2.new(0, 24, 0, 24)
+CloseBtn.Position = UDim2.new(1, -35, 0, 6)
+CloseBtn.Size = UDim2.new(0, 28, 0, 28)
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.Text = "X"
 CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseBtn.TextSize = 10
+CloseBtn.TextSize = 12
 Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(1, 0)
+CloseBtn.MouseButton1Click:Connect(function() ToggleUI(false) end)
 
--- التقسيم الأفقي: القائمة الجانبية (الأقسام) + شاشة العرض
-local Sidebar = Instance.new("ScrollingFrame", MainFrame)
-Sidebar.BackgroundColor3 = Color3.fromRGB(20, 22, 30)
-Sidebar.Position = UDim2.new(0, 8, 0, 40)
-Sidebar.Size = UDim2.new(0, 150, 1, -48)
-Sidebar.CanvasSize = UDim2.new(0, 0, 0, 250)
-Sidebar.ScrollBarThickness = 3
-Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 8)
+-- نظام التبويبات (Tabs)
+local TabsHolder = Instance.new("Frame", MainFrame)
+TabsHolder.BackgroundTransparency = 1
+TabsHolder.Position = UDim2.new(0, 10, 0, 48)
+TabsHolder.Size = UDim2.new(1, -20, 0, 32)
 
-local SideLayout = Instance.new("UIListLayout", Sidebar)
-SideLayout.SortOrder = Enum.SortOrder.LayoutOrder
-SideLayout.Padding = UDim.new(0, 4)
+local Tab1Btn = Instance.new("TextButton", TabsHolder)
+Tab1Btn.BackgroundColor3 = Color3.fromRGB(0, 140, 200)
+Tab1Btn.Size = UDim2.new(0.48, 0, 1, 0)
+Tab1Btn.Font = Enum.Font.GothamBold
+Tab1Btn.Text = "⚡ Hacks & Tools"
+Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tab1Btn.TextSize, Tab1Btn.Name = 12, "Tab1Btn"
+Instance.new("UICorner", Tab1Btn).CornerRadius = UDim.new(0, 8)
 
-local ContentDisplay = Instance.new("ScrollingFrame", MainFrame)
-ContentDisplay.BackgroundColor3 = Color3.fromRGB(20, 22, 30)
-ContentDisplay.Position = UDim2.new(0, 164, 0, 40)
-ContentDisplay.Size = UDim2.new(1, -172, 1, -48)
-ContentDisplay.CanvasSize = UDim2.new(0, 0, 0, 600)
-ContentDisplay.ScrollBarThickness = 4
-Instance.new("UICorner", ContentDisplay).CornerRadius = UDim.new(0, 8)
+local Tab2Btn = Instance.new("TextButton", TabsHolder)
+Tab2Btn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+Tab2Btn.Position = UDim2.new(0.52, 0, 0, 0)
+Tab2Btn.Size = UDim2.new(0.48, 0, 1, 0)
+Tab2Btn.Font = Enum.Font.GothamBold
+Tab2Btn.Text = "📜 Changelog History"
+Tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tab2Btn.TextSize, Tab2Btn.Name = 12, "Tab2Btn"
+Instance.new("UICorner", Tab2Btn).CornerRadius = UDim.new(0, 8)
 
-local ContentText = Instance.new("TextLabel", ContentDisplay)
-ContentText.BackgroundTransparency = 1
-ContentText.Position = UDim2.new(0, 10, 0, 10)
-ContentText.Size = UDim2.new(1, -20, 0, 580)
-ContentText.Font = Enum.Font.Gotham
-ContentText.Text = "اخترق أقسام الإنجليزية من القائمة الجانبية لترى الفوائد والقواعد والمصطلحات (أكثر من 500 فائدة ومثال جاهز للاستخدام اليومي والمهني)."
-ContentText.TextColor3 = Color3.fromRGB(220, 220, 220)
-ContentText.TextSize = 11
-ContentText.TextWrapped = true
-ContentText.TextXAlignment = Enum.TextXAlignment.Left
-ContentText.TextYAlignment = Enum.TextYAlignment.Top
+-- محتوى الصفحة الأولى (الأدوات والهاكات)
+local HacksPage = Instance.new("ScrollingFrame", MainFrame)
+HacksPage.BackgroundTransparency = 1
+HacksPage.Position = UDim2.new(0, 10, 0, 90)
+HacksPage.Size = UDim2.new(1, -20, 1, -100)
+HacksPage.CanvasSize = UDim2.new(0, 0, 0, 360)
+HacksPage.ScrollBarThickness = 4
+HacksPage.Visible = true
 
--- بيانات الأقسام (تغطي أكثر من 500 فائدة ومهارة ومصطلح)
-local categories = {
-    {name = "1. أقوى 100 مصطلح (Idioms)", data = [[أهم المصطلحات الإنجليزية المستخدمة في الحياة اليومية:
-1. Piece of cake = سهل جداً
-2. Break a leg = حظاً سعيداً
-3. Cost an arm and a leg = باهظ الثمن جداً
-4. Hit the sack = اذهب للنوم
-5. Under the weather = مريض أو متعب
-6. Spill the beans = افشي السر
-7. Bite the bullet = تحمل الصعاب بشجاعة
-8. Once in a blue moon = نادراً جداً
-9. Burn the midnight oil = السهر للعمل أو الدراسة
-10. Catch a break = احصل على فرصة
-(والمزيد من المصطلحات الشائعة لتغطية الـ 100 فائدة الأولى)...]]},
-    
-    {name = "2. أهم 100 قاعدة (Grammar)", data = [[ملخص قواعد اللغة الإنجليزية الأساسية:
-1. المضارع البسيط (Simple Present): يعبر عن الحقائق والعادات (I play).
-2. الماضي البسيط (Simple Past): حدث وانتهى (I played).
-3. المستقبل (Future): استخدام will / going to.
-4. الأفعال المساعدة (Auxiliary Verbs): do, does, did, have, has.
-5. الصفات والظروف (Adjectives & Adverbs): الصفة تصف الاسم، والظرف يصف الفعل.
-6. الضمائر (Pronouns): he, she, it, they, we.
-7. الحروف الجر الأساسية (Prepositions): in, on, at.
-(وقواعد الإضافات، الأسماء الموصولة، والأزمنة التامة لتغطية 100 قاعدة أساسية)...]]},
-    
-    {name = "3. مفردات العمل والسفر (100 كلمة)", data = [[كلمات هامة للمطارات، الشركات، والمحادثات:
-1. Boarding Pass = بطاقة الصعود للطائرة
-2. Luggage = أمتعة / حقائب
-3. Destination = الوجهة المقصودة
-4. Schedule = جدول مواعيد
-5. Meeting = اجتماع عمل
-6. Negotiation = تفاوض
-7. Investment = استثمار
-8. Entrepreneur = رائد أعمال
-9. Partnership = شراكة
-10. Feedback = ملاحظات تقييمية
-(وأكثر من 90 كلمة أخرى متقدمة للعمل والسفر)...]]},
-    
-    {name = "4. أفعال مركبة شائعة (Phrasal Verbs)", data = [[أهم الأفعال المركبة التي تغير المعنى كلياً:
-1. Give up = يستسلم
-2. Look after = يعتني بـ
-3. Turn down = يرفض / يخفض الصوت
-4. Pick up = يلتقط / يوصل شخصاً
-5. Put off = يؤجل
-6. Run out of = ينفد من عنده شيء
-7. Call off = يلغي
-8. Set up = يجهز / يؤسس
-9. Get along = يتوافق مع
-10. Check in = يسجل دخول
-(وعشرات الأفعال المركبة الإضافية لإتقان المحادثة)...]]},
-    
-    {name = "5. جمل المحادثة الجاهزة (100 جملة)", data = [[جمل جاهزة لأي موقف يومي:
-1. How can I help you? = كيف يمكنني مساعدتك؟
-2. I really appreciate it = أقدر ذلك حقاً
-3. What do you think? = ما رأيك؟
-4. It doesn't matter = لا يهم
-5. Could you repeat that, please? = هل يمكنك تكرار ذلك من فضلك؟
-6. I am looking forward to it = أنا أتطلع إلى ذلك بفارغ الصبر
-7. Let's get straight to the point = لندخل في صلب الموضوع مباشرة
-8. Take your time = خذ كل وقتك
-(وجمل الطوارئ، التعبير عن الرأي، والترحيب لتكتمل الـ 500 فائدة الكاملة)...]]}
-}
+local UIList1 = Instance.new("UIListLayout", HacksPage)
+UIList1.SortOrder = Enum.SortOrder.LayoutOrder
+UIList1.Padding = UDim.new(0, 8)
 
--- إنشاء أزرار القائمة الجانبية أفقياً وعمودياً داخل البانل
-for _, cat in ipairs(categories) do
-    local btn = Instance.new("TextButton", Sidebar)
-    btn.Size = UDim2.new(1, -6, 0, 36)
-    btn.BackgroundColor3 = Color3.fromRGB(28, 32, 45)
-    btn.Font = Enum.Font.GothamBold
-    btn.Text = cat.name
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    btn.TextSize = 9
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
-    
-    btn.MouseButton1Click:Connect(function()
-        ContentText.Text = cat.data
-    end)
-end
+-- محتوى الصفحة الثانية (سجل التحديثات التاريخي)
+local ChangelogPage = Instance.new("ScrollingFrame", MainFrame)
+ChangelogPage.BackgroundTransparency = 1
+ChangelogPage.Position = UDim2.new(0, 10, 0, 90)
+ChangelogPage.Size = UDim2.new(1, -20, 1, -100)
+ChangelogPage.CanvasSize = UDim2.new(0, 0, 0, 450)
+ChangelogPage.ScrollBarThickness = 4
+ChangelogPage.Visible = false
 
-Sidebar.CanvasSize = UDim2.new(0, 0, 0, #categories * 40)
+local UIList2 = Instance.new("UIListLayout", ChangelogPage)
+UIList2.SortOrder = Enum.SortOrder.LayoutOrder
+UIList2.Padding = UDim.new(0, 8)
 
-CloseBtn.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
+Tab1Btn.MouseButton1Click:Connect(function()
+    HacksPage.Visible = true
+    ChangelogPage.Visible = false
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(0, 140, 200)
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
 end)
 
+Tab2Btn.MouseButton1Click:Connect(function()
+    HacksPage.Visible = false
+    ChangelogPage.Visible = true
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(140, 0, 200)
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+end)
+
+-- وظيفة لإنشاء أزرار الأفعال في الصفحة الأولى
+local function createHackBtn(text, color)
+    local btn = Instance.new("TextButton", HacksPage)
+    btn.BackgroundColor3 = color
+    btn.Size = UDim2.new(1, 0, 0, 40)
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 12
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+    return btn
+end
+
+local GivePortalGun = createHackBtn("🔫 Give Quantum Portal Gun (Tool)", Color3.fromRGB(30, 100, 150))
+local GiveGrappleBtn = createHackBtn("🧗‍♂️ Give Quantum Grappling Hook (Tool)", Color3.fromRGB(30, 120, 100))
+local GhostDashBtn = createHackBtn("👻 Phase Ghost Dash (Through Walls): [OFF]", Color3.fromRGB(50, 50, 70))
+local TimeSlowBtn = createHackBtn("⏳ Time Dilation (Slow Motion World): [OFF]", Color3.fromRGB(50, 50, 70))
+
+-- 1. أداة سلاح البوابات اليدوية (Portal Gun Tool)
+GivePortalGun.MouseButton1Click:Connect(function()
+    if Player.Backpack:FindFirstChild("PortalGun") or (Player.Character and Player.Character:FindFirstChild("PortalGun")) then return end
+    local tool = Instance.new("Tool")
+    tool.Name = "PortalGun"
+    tool.RequiresHandle = true
+    tool.TextureId = "rbxassetid://6035111166"
+    
+    local handle = Instance.new("Part", tool)
+    handle.Name = "Handle"
+    handle.Size = Vector3.new(0.8, 0.8, 3)
+    handle.Color = Color3.fromRGB(0, 180, 255)
+    Instance.new("SpecialMesh", handle).MeshType = Enum.MeshType.Cylinder
+
+    local p1, p2 = nil, nil
+    tool.Activated:Connect(function()
+        local char = Player.Character
+        if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+        local cam = Workspace.CurrentCamera
+        local ray = Ray.new(cam.CFrame.Position, cam.CFrame.LookVector * 1000)
+        local hit, pos = Workspace:FindPartOnRay(ray, char)
+        if hit then
+            if not p1 then
+                p1 = Instance.new("Part", Workspace)
+                p1.Size = Vector3.new(2, 5, 0.2) p1.Anchored = true p1.CanCollide = false
+                p1.Color = Color3.fromRGB(0, 200, 255) p1.CFrame = CFrame.new(pos + Vector3.new(0,2,0))
+            elseif not p2 then
+                p2 = Instance.new("Part", Workspace)
+                p2.Size = Vector3.new(2, 5, 0.2) p2.Anchored = true p2.CanCollide = false
+                p2.Color = Color3.fromRGB(255, 150, 0) p2.CFrame = CFrame.new(pos + Vector3.new(0,2,0))
+                
+                -- التفعيل والقفز عبر البوابات بالزخم
+                p1.Touched:Connect(function(hitObj)
+                    if hitObj.Parent == char then
+                        char.HumanoidRootPart.CFrame = p2.CFrame * CFrame.new(0,0,-3)
+                        char.HumanoidRootPart.AssemblyLinearVelocity = char.HumanoidRootPart.AssemblyLinearVelocity * 1.6
+                    end
+                end)
+                p2.Touched:Connect(function(hitObj)
+                    if hitObj.Parent == char then
+                        char.HumanoidRootPart.CFrame = p1.CFrame * CFrame.new(0,0,-3)
+                        char.HumanoidRootPart.AssemblyLinearVelocity = char.HumanoidRootPart.AssemblyLinearVelocity * 1.6
+                    end
+                end)
+            else
+                p1:Destroy() p2:Destroy() p1, p2 = nil, nil
+            end
+        end
+    end)
+    tool.Parent = Player.Backpack
+end)
+
+-- 2. أداة خطاف الجريان (Grappling Hook Tool)
+GiveGrappleBtn.MouseButton1Click:Connect(function()
+    if Player.Backpack:FindFirstChild("GrappleHook") then return end
+    local tool = Instance.new("Tool")
+    tool.Name = "GrappleHook"
+    tool.RequiresHandle = true
+    local handle = Instance.new("Part", tool)
+    handle.Name = "Handle" handle.Size = Vector3.new(1,1,2) handle.Color = Color3.fromRGB(0, 255, 128)
+
+    tool.Activated:Connect(function()
+        local char = Player.Character
+        if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+        local cam = Workspace.CurrentCamera
+        local ray = Ray.new(cam.CFrame.Position, cam.CFrame.LookVector * 1500)
+        local _, pos = Workspace:FindPartOnRay(ray, char)
+        if pos then
+            local bv = Instance.new("BodyVelocity", char.HumanoidRootPart)
+            bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+            bv.Velocity = (pos - char.HumanoidRootPart.Position).Unit * 120
+            Camera.FieldOfView = 90
+            task.wait(0.4)
+            bv:Destroy()
+            Camera.FieldOfView = 70
+        end
+    end)
+    tool.Parent = Player.Backpack
+end)
+
+-- 3. العبور الطيفي (Ghost Dash)
+local ghostActive = false
+GhostDashBtn.MouseButton1Click:Connect(function()
+    ghostActive = not ghostActive
+    GhostDashBtn.Text = ghostActive and "👻 Phase Ghost Dash (Through Walls): [ON]" or "👻 Phase Ghost Dash (Through Walls): [OFF]"
+    GhostDashBtn.BackgroundColor3 = ghostActive and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(50, 50, 70)
+    
+    task.spawn(function()
+        while ghostActive and task.wait(0.1) do
+            local char = Player.Character
+            if char then
+                for _, part in ipairs(char:GetDescendants()) do
+                    if part:IsA("BasePart") then part.CanCollide = false end
+                end
+            end
+        end
+        local char = Player.Character
+        if char then
+            for _, part in ipairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then part.CanCollide = true end
+            end
+        end
+    end)
+end)
+
+-- 4. إبطاء الزمن (Time Dilation)
+local timeSlowActive = false
+TimeSlowBtn.MouseButton1Click:Connect(function()
+    timeSlowActive = not timeSlowActive
+    TimeSlowBtn.Text = timeSlowActive and "⏳ Time Dilation (Slow Motion World): [ON]" or "⏳ Time Dilation (Slow Motion World): [OFF]"
+    TimeSlowBtn.BackgroundColor3 = timeSlowActive and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(50, 50, 70)
+    
+    if timeSlowActive then
+        for _, obj in ipairs(Workspace:GetDescendants()) do
+            if obj:IsA("BasePart") and obj.Parent ~= Player.Character then
+                obj.AssemblyLinearVelocity = obj.AssemblyLinearVelocity * 0.3
+            end
+        end
+    end
+end)
+
+-- تعبئة صفحة سجل التحديثات (Changelog History) بالترتيب التاريخي لكل ما بنيناه
+local function addLogItem(version, title, desc, color)
+    local frame = Instance.new("Frame", ChangelogPage)
+    frame.BackgroundColor3 = Color3.fromRGB(18, 20, 30)
+    frame.Size = UDim2.new(1, 0, 0, 85)
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+    local stroke = Instance.new("UIStroke", frame)
+    stroke.Color = color stroke.Thickness = 1
+    
+    local vLabel = Instance.new("TextLabel", frame)
+    vLabel.BackgroundTransparency = 1 vLabel.Position = UDim2.new(0, 10, 0, 6)
+    vLabel.Size = UDim2.new(0, 100, 0, 20) vLabel.Font = Enum.Font.GothamBold
+    vLabel.Text = version vLabel.TextColor3 = color vLabel.TextSize = 11
+    vLabel.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local tLabel = Instance.new("TextLabel", frame)
+    tLabel.BackgroundTransparency = 1 tLabel.Position = UDim2.new(0, 10, 0, 26)
+    tLabel.Size = UDim2.new(1, -20, 0, 20) tLabel.Font = Enum.Font.GothamBold
+    tLabel.Text = title tLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tLabel.TextSize = 12 tLabel.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local dLabel = Instance.new("TextLabel", frame)
+    dLabel.BackgroundTransparency = 1 dLabel.Position = UDim2.new(0, 10, 0, 48)
+    dLabel.Size = UDim2.new(1, -20, 0, 30) dLabel.Font = Enum.Font.Gotham
+    dLabel.Text = desc dLabel.TextColor3 = Color3.fromRGB(170, 170, 190)
+    dLabel.TextSize = 10 dLabel.TextXAlignment = Enum.TextXAlignment.Left
+    dLabel.TextWrapped = true
+end
+
+addLogItem("v1.0 (Initial)", "GitHub Raw Setup & Basic Connect", "ربط ملف script.lua عبر جيت هاب وتشغيله لأول مرة في دلتا باستخدام loadstring.", Color3.fromRGB(100, 100, 100))
+addLogItem("v1.2 (UI Edition)", "Mobile Floating GUI Hub", "تصميم واجهة الهاتف مع الزر العائم القابل للسحب والإخفاء الذكي.", Color3.fromRGB(0, 160, 255))
+addLogItem("v1.5 (Physics Update)", "Quantum Portal Gun System", "إضافة مسدس البوابات الفيزيائي المعتمد على الزخم والانتقال المكاني الفوري.", Color3.fromRGB(255, 170, 0))
+addLogItem("v2.0 (Ultimate PRO)", "Grappling Hook, Ghost & Time Dilation", "دمج أدوات اليد (Tools)، التخفي الطيفي لاختراق الحوارص، والتحكم بالزمن.", Color3.fromRGB(0, 255, 128))
+
+print("TRL Master Hub Loaded Successfully!")
