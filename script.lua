@@ -1,6 +1,6 @@
 --[[
     ==================================================================
-    TRL ULTIMATE DASHBOARD HUB [24H EXPIRATION & KEY SYSTEM]
+    TRL ULTIMATE DASHBOARD HUB [BILINGUAL: EN/AR + 24H KEY SYSTEM]
     ==================================================================
 ]]
 
@@ -11,12 +11,8 @@ local TweenService = game:GetService("TweenService")
 local Player = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 
-if CoreGui:FindFirstChild("TRL_KeySystemUI") then
-    CoreGui.TRL_KeySystemUI:Destroy()
-end
-if CoreGui:FindFirstChild("TRL_UltimateDashboard") then
-    CoreGui.TRL_UltimateDashboard:Destroy()
-end
+if CoreGui:FindFirstChild("TRL_KeySystemUI") then CoreGui.TRL_KeySystemUI:Destroy() end
+if CoreGui:FindFirstChild("TRL_UltimateDashboard") then CoreGui.TRL_UltimateDashboard:Destroy() end
 
 -- =================================================================
 -- واجهة إدخال المفتاح (Key System GUI)
@@ -50,7 +46,7 @@ KeyDesc.BackgroundTransparency = 1
 KeyDesc.Position = UDim2.new(0, 20, 0, 45)
 KeyDesc.Size = UDim2.new(1, -40, 0, 40)
 KeyDesc.Font = Enum.Font.Gotham
-KeyDesc.Text = "انسخ المفتاح من الموقع (صالح لـ 24 ساعة فقط) والصقه هنا:"
+KeyDesc.Text = "Paste the key from website (Valid for 24 hours):"
 KeyDesc.TextColor3 = Color3.fromRGB(180, 180, 180)
 KeyDesc.TextSize = 11
 KeyDesc.TextWrapped = true
@@ -60,7 +56,7 @@ TextBox.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 TextBox.Position = UDim2.new(0.1, 0, 0, 95)
 TextBox.Size = UDim2.new(0.8, 0, 0, 40)
 TextBox.Font = Enum.Font.Gotham
-TextBox.PlaceholderText = "الصق الكود هنا..."
+TextBox.PlaceholderText = "Paste key here..."
 TextBox.Text = ""
 TextBox.TextColor3 = Color3.fromRGB(0, 255, 200)
 TextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 100)
@@ -75,13 +71,13 @@ SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
 SubmitBtn.Position = UDim2.new(0.1, 0, 0, 155)
 SubmitBtn.Size = UDim2.new(0.8, 0, 0, 40)
 SubmitBtn.Font = Enum.Font.GothamBold
-SubmitBtn.Text = "تحقق ودخول 🚀"
+SubmitBtn.Text = "Verify & Enter 🚀"
 SubmitBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
 SubmitBtn.TextSize = 13
 Instance.new("UICorner", SubmitBtn).CornerRadius = UDim.new(0, 8)
 
 -- =================================================================
--- دالة تشغيل الداشبورد الأساسية
+-- دالة تشغيل الداشبورد الأساسية (ثنائية اللغة)
 -- =================================================================
 local function LaunchMainHub()
     KeyGui:Destroy()
@@ -146,12 +142,23 @@ local function LaunchMainHub()
     local TitleLabel = Instance.new("TextLabel", TopBar)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Position = UDim2.new(0, 15, 0, 0)
-    TitleLabel.Size = UDim2.new(0, 300, 1, 0)
+    TitleLabel.Size = UDim2.new(0, 250, 1, 0)
     TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = "🔥 TRL SECURED DASHBOARD [PRO]"
+    TitleLabel.Text = "🔥 TRL SECURED DASHBOARD"
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextSize = 12
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- زر تبديل اللغة داخل الداشبورد
+    local LangToggleBtn = Instance.new("TextButton", TopBar)
+    LangToggleBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+    LangToggleBtn.Position = UDim2.new(1, -75, 0, 6)
+    LangToggleBtn.Size = UDim2.new(0, 35, 0, 28)
+    LangToggleBtn.Font = Enum.Font.GothamBold
+    LangToggleBtn.Text = "AR"
+    LangToggleBtn.TextColor3 = Color3.fromRGB(255, 200, 0)
+    LangToggleBtn.TextSize = 11
+    Instance.new("UICorner", LangToggleBtn).CornerRadius = UDim.new(0, 6)
 
     local CloseBtn = Instance.new("TextButton", TopBar)
     CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
@@ -173,7 +180,7 @@ local function LaunchMainHub()
     Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
     Tab1Btn.Size = UDim2.new(0.48, 0, 1, 0)
     Tab1Btn.Font = Enum.Font.GothamBold
-    Tab1Btn.Text = "⚙️ الأساسية (Page 1)"
+    Tab1Btn.Text = "⚙️ Main (Page 1)"
     Tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     Tab1Btn.TextSize = 11
     Instance.new("UICorner", Tab1Btn).CornerRadius = UDim.new(0, 6)
@@ -183,7 +190,7 @@ local function LaunchMainHub()
     Tab2Btn.Position = UDim2.new(0.52, 0, 0, 0)
     Tab2Btn.Size = UDim2.new(0.48, 0, 1, 0)
     Tab2Btn.Font = Enum.Font.GothamBold
-    Tab2Btn.Text = "✨ الخارقة الجديدة (Page 2)"
+    Tab2Btn.Text = "✨ God Tools (Page 2)"
     Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
     Tab2Btn.TextSize = 11
     Instance.new("UICorner", Tab2Btn).CornerRadius = UDim.new(0, 6)
@@ -239,20 +246,70 @@ local function LaunchMainHub()
         return btn
     end
 
-    local Btn1 = createButton(Page1, "🛸 1. Drone Spectator Cam: [OFF]", Color3.fromRGB(40, 40, 60))
-    local Btn2 = createButton(Page1, "👥 2. Shadow Clone Decoy: [SPAWN]", Color3.fromRGB(40, 40, 60))
-    local Btn3 = createButton(Page1, "📡 3. Echolocation Pulse Scanner", Color3.fromRGB(40, 40, 60))
-    local Btn4 = createButton(Page1, "🚀 4. Kinetic Super-Dash (Forward Burst)", Color3.fromRGB(0, 120, 180))
+    -- النصوص باللغتين
+    local currentLang = "en"
+    local localizedTexts = {
+        en = {
+            tab1 = "⚙️ Main (Page 1)",
+            tab2 = "✨ God Tools (Page 2)",
+            b1_off = "🛸 1. Drone Spectator Cam: [OFF]",
+            b1_on = "🛸 1. Drone Spectator Cam: [ON]",
+            b2 = "👥 2. Shadow Clone Decoy: [SPAWN]",
+            b3 = "📡 3. Echolocation Pulse Scanner",
+            b4 = "🚀 4. Kinetic Super-Dash (Forward Burst)",
+            n1 = "🧲 1. Auto-Loot Magnet (Pull Items)",
+            n2 = "🔄 2. Control Reverser (Troll Players)",
+            n3 = "👻 3. Radar Ghost Mode (Hide Name)",
+            n4_off = "🧊 4. Air-Step Platform: [OFF]",
+            n4_on = "🧊 4. Air-Step Platform: [ON]"
+        },
+        ar = {
+            tab1 = "⚙️ الأساسية (الصفحة 1)",
+            tab2 = "✨ الأدوات الخارقة (الصفحة 2)",
+            b1_off = "🛸 1. كاميرا الدرون: [معطل]",
+            b1_on = "🛸 1. كاميرا الدرون: [مفعل]",
+            b2 = "👥 2. إنشاء نسخة وهمية (Clone)",
+            b3 = "📡 3. رادار كشف اللاعبين (Pulse)",
+            b4 = "🚀 4. اندفاع خارق للأمام (Super-Dash)",
+            n1 = "🧲 1. مغناطيس جمع الأغراض (Auto-Loot)",
+            n2 = "🔄 2. انعكاس التحكم (Troll)",
+            n3 = "👻 3. وضع الشبح المخفي (Hide Name)",
+            n4_off = "🧊 4. منصة المشي في الهواء: [معطل]",
+            n4_on = "🧊 4. منصة المشي في الهواء: [مفعل]"
+        }
+    }
 
-    local BtnNew1 = createButton(Page2, "🧲 1. Auto-Loot Magnet (Pull Items)", Color3.fromRGB(150, 80, 0))
-    local BtnNew2 = createButton(Page2, "🔄 2. Control Reverser (Troll Players)", Color3.fromRGB(120, 40, 120))
-    local BtnNew3 = createButton(Page2, "👻 3. Radar Ghost Mode (Hide Name)", Color3.fromRGB(40, 100, 120))
-    local BtnNew4 = createButton(Page2, "🧊 4. Air-Step Platform: [OFF]", Color3.fromRGB(0, 130, 80))
+    local Btn1 = createButton(Page1, localizedTexts.en.b1_off, Color3.fromRGB(40, 40, 60))
+    local Btn2 = createButton(Page1, localizedTexts.en.b2, Color3.fromRGB(40, 40, 60))
+    local Btn3 = createButton(Page1, localizedTexts.en.b3, Color3.fromRGB(40, 40, 60))
+    local Btn4 = createButton(Page1, localizedTexts.en.b4, Color3.fromRGB(0, 120, 180))
 
+    local BtnNew1 = createButton(Page2, localizedTexts.en.n1, Color3.fromRGB(150, 80, 0))
+    local BtnNew2 = createButton(Page2, localizedTexts.en.n2, Color3.fromRGB(120, 40, 120))
+    local BtnNew3 = createButton(Page2, localizedTexts.en.n3, Color3.fromRGB(40, 100, 120))
+    local BtnNew4 = createButton(Page2, localizedTexts.en.n4_off, Color3.fromRGB(0, 130, 80))
+
+    -- تبديل النصوص داخل الداشبورد
+    LangToggleBtn.MouseButton1Click:Connect(function()
+        currentLang = currentLang == "en" and "ar" or "en"
+        LangToggleBtn.Text = currentLang == "en" and "AR" | "EN"
+        LangToggleBtn.Text = currentLang == "en" and "AR" or "EN"
+        
+        Tab1Btn.Text = localizedTexts[currentLang].tab1
+        Tab2Btn.Text = localizedTexts[currentLang].tab2
+        Btn2.Text = localizedTexts[currentLang].b2
+        Btn3.Text = localizedTexts[currentLang].b3
+        Btn4.Text = localizedTexts[currentLang].b4
+        BtnNew1.Text = localizedTexts[currentLang].n1
+        BtnNew2.Text = localizedTexts[currentLang].n2
+        BtnNew3.Text = localizedTexts[currentLang].n3
+    end)
+
+    -- الوظائف البرمجية للأزرار
     local droneActive, droneCamPart = false, nil
     Btn1.MouseButton1Click:Connect(function()
         droneActive = not droneActive
-        Btn1.Text = droneActive and "🛸 1. Drone Spectator Cam: [ON]" or "🛸 1. Drone Spectator Cam: [OFF]"
+        Btn1.Text = droneActive and localizedTexts[currentLang].b1_on or localizedTexts[currentLang].b1_off
         Btn1.BackgroundColor3 = droneActive and Color3.fromRGB(0, 150, 100) or Color3.fromRGB(40, 40, 60)
         if droneActive then
             droneCamPart = Instance.new("Part", Workspace)
@@ -327,7 +384,7 @@ local function LaunchMainHub()
     local currentPlatform = nil
     BtnNew4.MouseButton1Click:Connect(function()
         airStepActive = not airStepActive
-        BtnNew4.Text = airStepActive and "🧊 4. Air-Step Platform: [ON]" or "🧊 4. Air-Step Platform: [OFF]"
+        BtnNew4.Text = airStepActive and localizedTexts[currentLang].n4_on or localizedTexts[currentLang].n4_off
         BtnNew4.BackgroundColor3 = airStepActive and Color3.fromRGB(0, 200, 100) or Color3.fromRGB(0, 130, 80)
         
         if airStepActive then
@@ -344,32 +401,25 @@ local function LaunchMainHub()
             if currentPlatform then currentPlatform:Destroy() currentPlatform = nil end
         end
     end)
-
-    print("TRL Ultimate Dashboard Loaded Successfully!")
 end
 
 -- =================================================================
--- التحقق من المفتاح مع نظام صلاحية 24 ساعة
+-- التحقق من المفتاح وصلاحية الـ 24 ساعة
 -- =================================================================
 SubmitBtn.MouseButton1Click:Connect(function()
     local userKey = TextBox.Text
     
-    -- تحليل الكود للتأكد من بنيته واستخراج وقت الإنشاء (Timestamp)
     if string.sub(userKey, 1, 8) == "TRL-PRO-" then
         local parts = {}
         for part in string.gmatch(userKey, "[^-]+") do
             table.insert(parts, part)
         end
         
-        -- المفتاح يجب أن يكون: TRL - PRO - [Timestamp] - [RandomString]
         local keyTimestamp = tonumber(parts[3])
         if keyTimestamp then
-            local currentTime = os.time() * 1050 -- وقت النظام الحالي بالمللي ثانية تقريباً
             local diffHours = (os.time() * 1000 - keyTimestamp) / (1000 * 60 * 60)
-            
-            -- التحقق إذا مر على المفتاح أقل من 24 ساعة
             if diffHours >= 0 and diffHours <= 24 then
-                SubmitBtn.Text = "تم التحقق (ساري المفعول) ✅"
+                SubmitBtn.Text = "Verified Successfully! ✅"
                 SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
                 task.wait(0.8)
                 LaunchMainHub()
@@ -378,10 +428,9 @@ SubmitBtn.MouseButton1Click:Connect(function()
         end
     end
     
-    -- إذا كان الكود خطأ أو منتهي الصلاحية (> 24 ساعة)
-    SubmitBtn.Text = "المفتاح منتهي أو غير صالح! ❌"
+    SubmitBtn.Text = "Invalid or Expired Key! ❌"
     SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
     task.wait(1.5)
-    SubmitBtn.Text = "تحقق ودخول 🚀"
+    SubmitBtn.Text = "Verify & Enter 🚀"
     SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
 end)
